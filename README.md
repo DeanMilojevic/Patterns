@@ -185,3 +185,5 @@ public class CommandManager
     }
 }
 ```
+
+The internal workings of the `ICommand` contract implementation is not something that Command Manager/Invoker should care about. Same goes other way around. The `Command` should not be concerned about how it is gonna be executed. There are multiple flavours of this pattern I saw over the time. Sometimes a specific manager per feature/domain within the system. Sometimes a generic one that handles all different implementations of the `ICommand` (this is quite a good starting point, tho it usually hits the wall with different requirements in different parts of the system).
