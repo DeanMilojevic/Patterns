@@ -134,3 +134,54 @@ As you can imagine, this pattern opens a door to flood of the opinions and some 
 
 1. Implement it on the boundaries of your domain and don't use the `null` (or `null` checks) anywhere else.
 2. Don't mix usage of the `null` and `Null Object` pattern it makes just even more confusing.
+
+## Command
+
+This is one of the patterns that I had opportunity to use from time to time (not to be mistaken with CQS Principle tho) on different projects. It allows separation of the command execution and the command executor. The command executor provides the command that needs to be run and passes it along to the middle party. This middle party is fully responsible to handle the command execution in an uniform way. The common contract that "middle-party" provides within this pattern are the following:
+
+1. Can command be executed (precondition check).
+2. Command execution.
+3. Undo of the executed command.
+
+The contract to describe a command:
+
+```csharp
+public interface ICommand
+{
+    bool CanExecute();
+    void Execute();
+    void Undo();
+}
+```
+
+The "middle-party" (often referred to as Invoker or Command Manager) looks similar to this (simplified version):
+
+```csharp
+public class CommandManager
+{
+    private readonly Stack<ICommand> _executed;
+
+    public CommandManager()
+    {
+        _executed = new Stack<ICommand>();
+    }
+
+    public void Invoke(ICommand command)
+    {
+        if (command.CanExecute())
+        {
+            _executed.Push(command);
+            command.Execute();
+        }
+    }
+
+    public void Undo()
+    {
+        while(_executed.Any())
+        {
+            var command = _executed.Pop();
+            command.Undo();
+        }
+    }
+}
+```
