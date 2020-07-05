@@ -1,10 +1,10 @@
 namespace Example.NullObject
 {
-    public interface IMyObject
-    {
-        public int Id { get; }
-        public string Value { get; }
-    }
+  public interface IMyObject
+  {
+      public int Id { get; }
+      public string Value { get; }
+  }
 
   public class MyObject : IMyObject
   {
