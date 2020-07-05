@@ -41,6 +41,7 @@ namespace Example.NullObject.Tests
                 if (i % 10 == 0)
                 {
                     list.Add(null);
+                    continue;
                 }
 
                 list.Add(new MyObject(i, $"{i}"));
@@ -58,6 +59,7 @@ namespace Example.NullObject.Tests
                 if (i % 10 == 0)
                 {
                     list.Add(new MyNullObject());
+                    continue;
                 }
 
                 list.Add(new MyObject(i, $"{i}"));
