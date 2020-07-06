@@ -257,4 +257,4 @@ public class Mediator
 }
 ```
 
-Simple and to the point. Tho, if you ever need to use this pattern, there are quite a lot of good solutions out there that you can reference. Usually I end up with the [MediatR](https://github.com/jbogard/MediatR) from Jimmy Bogard. It is quite popular projects and handles a lot of this "intermediate" stuff for you.
+Simple and to the point. Tho, if you ever need to use this pattern, there are quite a lot of good solutions out there that you can reference. Usually I end up with the [MediatR](https://github.com/jbogard/MediatR) from Jimmy Bogard. It is a quite popular project and handles a lot of this "intermediate" stuff for you.
