@@ -135,7 +135,7 @@ As you can imagine, this pattern opens a door to flood of the opinions and some 
 1. Implement it on the boundaries of your domain and don't use the `null` (or `null` checks) anywhere else.
 2. Don't mix usage of the `null` and `Null Object` pattern it makes just even more confusing.
 
-## Command
+### Command
 
 This is one of the patterns that I had opportunity to use from time to time (not to be mistaken with CQS Principle tho) on different projects. It allows separation of the command execution and the command executor. The command executor provides the command that needs to be run and passes it along to the middle party. This middle party is fully responsible to handle the command execution in an uniform way. The common contract that "middle-party" provides within this pattern are the following:
 
@@ -188,7 +188,7 @@ public class CommandManager
 
 The internal workings of the `ICommand` contract implementation is not something that Command Manager/Invoker should care about. Same goes other way around. The `Command` should not be concerned about how it is gonna be executed. There are multiple flavours of this pattern I saw over the time. Sometimes a specific manager per feature/domain within the system. Sometimes a generic one that handles all different implementations of the `ICommand` (this is quite a good starting point, tho it usually hits the wall with different requirements in different parts of the system).
 
-## Mediator
+### Mediator
 
 This is one of the more fun patterns that handles the communication between the objects. To handle this, we have the a "mediator" between the objects that is responsible to "abstract" away the communication between the objects in the system. This way we can add more and more objects and they will not know about each other. They will use the "mediator" to handle the communication and keep the separation and coupling to the minimum.
 
