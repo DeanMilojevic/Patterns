@@ -187,3 +187,74 @@ public class CommandManager
 ```
 
 The internal workings of the `ICommand` contract implementation is not something that Command Manager/Invoker should care about. Same goes other way around. The `Command` should not be concerned about how it is gonna be executed. There are multiple flavours of this pattern I saw over the time. Sometimes a specific manager per feature/domain within the system. Sometimes a generic one that handles all different implementations of the `ICommand` (this is quite a good starting point, tho it usually hits the wall with different requirements in different parts of the system).
+
+## Mediator
+
+This is one of the more fun patterns that handles the communication between the objects. To handle this, we have the a "mediator" between the objects that is responsible to "abstract" away the communication between the objects in the system. This way we can add more and more objects and they will not know about each other. They will use the "mediator" to handle the communication and keep the separation and coupling to the minimum.
+
+The example of the object and a simple contract (there are multiple ways to achieve this, this is just one way to this)
+
+```csharp
+public interface IMyObject
+{
+    void Register(Mediator mediator);
+    void Send(string message);
+    void Handle(string message);
+}
+
+public class MyObject : IMyObject
+{
+    private string _name;
+    private Mediator _mediator;
+
+    public MyObject(string name)
+    {
+        _name = name;
+    }
+
+    public void Register(Mediator mediator)
+    {
+        _mediator = mediator;
+    }
+
+    public void Send(string message)
+    {
+        _mediator.Send(message, this);
+    }
+
+    public void Handle(string message)
+    {
+        Console.WriteLine($"{_name} handled {message}");
+    }
+}
+```
+
+And now it is time for the "mediator":
+
+```csharp
+public class Mediator
+{
+    private readonly List<IMyObject> _objects;
+
+    public Mediator()
+    {
+        _objects = new List<IMyObject>();
+    }
+
+    public void Register(IMyObject obj)
+    {
+        obj.Register(this);
+        _objects.Add(obj);
+    }
+
+    public void Send(string message, IMyObject obj)
+    {
+        _objects
+          .Where(o => o != obj)
+          .ToList()
+          .ForEach(obj => obj.Handle(message));
+    }
+}
+```
+
+Simple and to the point. Tho, if you ever need to use this pattern, there are quite a lot of good solutions out there that you can reference. Usually I end up with the [MediatR](https://github.com/jbogard/MediatR) from Jimmy Bogard. It is quite popular projects and handles a lot of this "intermediate" stuff for you.
